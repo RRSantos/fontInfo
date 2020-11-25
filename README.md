@@ -1,2 +1,2 @@
 # fontParser
-Library to read essential informations from TTF fonts
+Library to read essential informations from TTF files
