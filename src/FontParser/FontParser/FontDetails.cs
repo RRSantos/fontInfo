@@ -3,7 +3,7 @@ using FontParser.Extension;
 using FontParser.StringExtractor;
 using System.Collections.Generic;
 using System.IO;
-
+using System;
 
 namespace FontParser
 {
@@ -46,13 +46,13 @@ namespace FontParser
             return nameRecords;
         }
 
-        public string Copyright { get; private set; }
+        public string Copyright { get; private set; } 
         public string Family { get; private set; }
         public string Subfamily { get; private set; }
         public string UniqueID { get; private set; }
         public string FullName { get; private set; }
         public string Version { get; private set; }
-        public string PostScriptName { get; private set; }
+        public string PostScriptName { get; private set; } 
         public string Trademark { get; private set; }
         public string Manufacturer { get; private set; }
         public string Designer { get; private set; }
@@ -64,7 +64,7 @@ namespace FontParser
         public string TypographicFamily { get; private set; }
         public string TypographicSubfamily { get; private set; }
         public string CompatibleFullName { get; private set; }
-        public string SampleText { get; private set; }
+        public string SampleText { get; private set; } = string.Empty;
         public string PostScriptCID { get; private set; }
         public string WWSFamily { get; private set; }
         public string WWSSubfamily { get; private set; }
@@ -73,6 +73,11 @@ namespace FontParser
         public string PostScriptNamePrefix { get; private set; }
 
         internal FontDetails(BinaryReader binaryReader, List<TableRecord> tables)
+        {
+            initInteralFields(binaryReader, tables);
+        }
+
+        private void initInteralFields(BinaryReader binaryReader, List<TableRecord> tables)
         {
             TableRecord nameTable = tables.Find(x => x.Tag == Constants.Strings.Tables.NAME);
             List<NameRecord> nameRecords = getNameRecords(binaryReader, nameTable);
