@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FontParser.Constant
+namespace FontParser.Constants
 {
-    internal static class Error
+    internal static class Errors
     {
         internal static class SFNT
         {

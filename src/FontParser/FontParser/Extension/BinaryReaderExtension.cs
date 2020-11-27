@@ -35,9 +35,9 @@ namespace FontParser.Extension
             return toUInt16BE(reader.ReadUInt16());
         }
 
-        public static void Skip(this BinaryReader reader, int ammount)
+        public static void Skip(this BinaryReader reader, int byteCount)
         {
-            reader.ReadBytes(ammount);
+            reader.ReadBytes(byteCount);
         }
     }
 }

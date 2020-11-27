@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 using FontParser;
 
@@ -9,19 +8,18 @@ namespace FontParserTests
         [Fact]
         public void ShouldReadWindowsFont()
         {
-            Font font = new Font(@"D:\Temp\Roboto\Roboto-Regular.ttf");
+            Font font = new Font(@"fonts/Roboto-Regular.ttf");
             
-            Assert.Equal("Roboto", font.FullName);
+            Assert.Equal("Roboto", font.Details.FullName);
 
         }
 
         [Fact]
         public void ShouldReadMacintoshFont()
         {
-            Font font = new Font(@"D:\Temp\trueno-font\TruenoBlack-mBYV.otf");
+            Font font = new Font(@"fonts/Trueno-wml2.otf");
 
-            Assert.Equal("Trueno Black", font.FullName);
-
+            Assert.Equal("Trueno", font.Details.FullName);
         }
     }
 }

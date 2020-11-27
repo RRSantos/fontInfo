@@ -1,4 +1,4 @@
-﻿using FontParser.Constant.NameRecord;
+﻿using static FontParser.Constants.Numbers;
 using System;
 
 namespace FontParser.StringExtractor
@@ -7,7 +7,7 @@ namespace FontParser.StringExtractor
     {
         public static IStringExtractor CreateExtractor(ushort platformID, ushort encodingID)
         {
-            if (platformID == Constant.NameRecord.PlatformID.Windows)
+            if (platformID == Constants.Numbers.PlatformID.Windows)
             {
                 if ((encodingID != EncodingID.Windows.Symbol) &&
                     (encodingID != EncodingID.Windows.UnicodeBMP) &&
@@ -15,7 +15,7 @@ namespace FontParser.StringExtractor
                 {
                     throw new ArgumentException(
                         string.Format(
-                            Constant.Error.StringExtractorFactory.INVALID_ENCODIG_FOR_PLATFORM,
+                            Constants.Errors.StringExtractorFactory.INVALID_ENCODIG_FOR_PLATFORM,
                             "Windows",
                             platformID,
                             encodingID));
@@ -24,14 +24,14 @@ namespace FontParser.StringExtractor
 
                 return new WindowsStringExtractor();
             }
-            else if (platformID == Constant.NameRecord.PlatformID.Unicode)
+            else if (platformID == Constants.Numbers.PlatformID.Unicode)
             {
                 if ((encodingID != EncodingID.Unicode.Unicode2_0) &&
                     (encodingID != EncodingID.Unicode.Unicode2_0_BMP))
                 {
                     throw new ArgumentException(
                         string.Format(
-                            Constant.Error.StringExtractorFactory.INVALID_ENCODIG_FOR_PLATFORM,
+                            Constants.Errors.StringExtractorFactory.INVALID_ENCODIG_FOR_PLATFORM,
                             "Unicode",
                             platformID,
                             encodingID));
@@ -39,7 +39,7 @@ namespace FontParser.StringExtractor
 
                 return new UnicodeStringExtractor();
             }
-            else if (platformID == Constant.NameRecord.PlatformID.Macintosh)
+            else if (platformID == Constants.Numbers.PlatformID.Macintosh)
             {   
                 return new MacintoshStringExtractor();
             }
@@ -47,7 +47,7 @@ namespace FontParser.StringExtractor
 
             throw new ArgumentException(
                 string.Format(
-                    Constant.Error.StringExtractorFactory.INVALID_PLATFORM_ID,
+                    Constants.Errors.StringExtractorFactory.INVALID_PLATFORM_ID,
                     platformID
                 )
             );

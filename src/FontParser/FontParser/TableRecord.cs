@@ -9,14 +9,14 @@ namespace FontParser
         {
             if (tagByte.Length != 4)
             {
-                throw new ArgumentException(Constant.Error.TableRecord.INVALID_TAG_SIZE);
+                throw new ArgumentException(Constants.Errors.TableRecord.INVALID_TAG_SIZE);
             }
 
             for (int i = 0; i < tagByte.Length; i++)
             {
                 if (!isInUnicodeBasicLatinCharRange(tagByte[i]))
                 {
-                    throw new ArgumentOutOfRangeException(Constant.Error.TableRecord.INVALID_CHAR_RANGE);
+                    throw new ArgumentOutOfRangeException(Constants.Errors.TableRecord.INVALID_CHAR_RANGE);
                 }
             }
         }
