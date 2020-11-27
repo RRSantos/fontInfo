@@ -14,8 +14,8 @@ namespace FontParser
             OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
 
 
-            Ascender = os2Table.ShouldUseTypoMetrics ? os2Table.TypoAscender : os2Table.WinAscent;
-            Descender = os2Table.ShouldUseTypoMetrics ? os2Table.TypoDescender : os2Table.WinDescent;
+            Ascender = os2Table.ShouldUseTypoMetrics ? (ushort)os2Table.TypoAscender : os2Table.WinAscent;
+            Descender = os2Table.ShouldUseTypoMetrics ? (ushort)os2Table.TypoDescender : os2Table.WinDescent;
             LineSpacing = (ushort)(Ascender - Descender + os2Table.TypoLineGap);
 
             //Baseline;
@@ -27,12 +27,12 @@ namespace FontParser
         }
 
         public uint Baseline { get; private set; }
-        public ushort Ascender { get; private set; }
+        public uint Ascender { get; private set; }
 
-        public ushort Descender { get; private set; }
+        public uint Descender { get; private set; }
         public uint Height { get; private set; }
 
-        public ushort LineSpacing { get; private set; }
+        public uint LineSpacing { get; private set; }
 
         public uint BlackBoxHeight { get; private set; }
 

@@ -25,6 +25,16 @@ namespace FontParser.Extension
             return (ushort)((bytes[0] << 8) | (bytes[1]));
         }
 
+        private static short toInt16BE(short value)
+        {
+            if (!BitConverter.IsLittleEndian)
+            {
+                return value;
+            }
+            byte[] bytes = BitConverter.GetBytes(value);
+            return (short)((bytes[0] << 8) | (bytes[1]));
+        }
+
         public static uint ReadUInt32BE(this BinaryReader reader)
         {
             return toUInt32BE(reader.ReadUInt32());
@@ -33,6 +43,11 @@ namespace FontParser.Extension
         public static ushort ReadUInt16BE(this BinaryReader reader)
         {
             return toUInt16BE(reader.ReadUInt16());
+        }
+
+        public static short ReadInt16BE(this BinaryReader reader)
+        {
+            return toInt16BE(reader.ReadInt16());
         }
 
         public static void Skip(this BinaryReader reader, int byteCount)
