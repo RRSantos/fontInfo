@@ -10,71 +10,37 @@ namespace FontParser
     public class FontDetails
     {
 
-        private string extractStringFromNameRecord(BinaryReader binaryReader, NameRecord nameRecord, uint tableOffset)
+        private List<NameRecord> getWindowsEnglishRecords(List<NameRecord> allRecords)
         {
-            uint stringOffset = tableOffset + nameRecord.StringOffset;
-
-            binaryReader.BaseStream.Seek(stringOffset, SeekOrigin.Begin);
-            byte[] nameByte = binaryReader.ReadBytes(nameRecord.Length);
-
-            IStringExtractor stringExtractor = StringExtractorFactory.CreateExtractor(nameRecord.PlatformID, nameRecord.EncodingID);
-            return stringExtractor.Extract(nameByte);
+            return allRecords.FindAll(
+                r => r.PlatformID == Constants.Numbers.PlatformID.Windows && 
+                r.LanguageID == LanguageID.Windows.English
+                );
         }
 
-        private List<NameRecord> getNameRecords(BinaryReader binaryReader, TableRecord nameTable)
+        private List<NameRecord> getMacintoshEnglishRecords(List<NameRecord> allRecords)
         {
-            binaryReader.BaseStream.Seek(nameTable.Offset, SeekOrigin.Begin);
-            binaryReader.Skip(2); //version
-            ushort nameRecordCount = binaryReader.ReadUInt16BE();
-            ushort storageOffset = binaryReader.ReadUInt16BE();
+            return allRecords.FindAll(
+                r => r.PlatformID == Constants.Numbers.PlatformID.Macintosh &&
+                r.LanguageID == LanguageID.Macintosh.English
+                );
+        }
 
-            List<NameRecord> nameRecords = new List<NameRecord>();
+        private List<NameRecord> deduplicateRecords(List<NameRecord> allRecords)
+        {
+            List<NameRecord> records = getWindowsEnglishRecords(allRecords);
 
-            for (int i = 0; i < nameRecordCount; i++)
+            if (records.Count == 0)
             {
-                NameRecord newRecord = new NameRecord(
-                    binaryReader.ReadUInt16BE(),
-                    binaryReader.ReadUInt16BE(),
-                    binaryReader.ReadUInt16BE(),
-                    binaryReader.ReadUInt16BE(),
-                    binaryReader.ReadUInt16BE(),
-                    (ushort)(binaryReader.ReadUInt16BE() + storageOffset));
+                records = getMacintoshEnglishRecords(allRecords);
 
-                nameRecords.Add(newRecord);
+                if (records.Count == 0)
+                {
+                    records = allRecords;
+                }
             }
 
-            return nameRecords;
-        }
-
-        public string Copyright { get; private set; } 
-        public string Family { get; private set; }
-        public string Subfamily { get; private set; }
-        public string UniqueID { get; private set; }
-        public string FullName { get; private set; }
-        public string Version { get; private set; }
-        public string PostScriptName { get; private set; } 
-        public string Trademark { get; private set; }
-        public string Manufacturer { get; private set; }
-        public string Designer { get; private set; }
-        public string Description { get; private set; }
-        public string URLVendor { get; private set; }
-        public string URLDesigner { get; private set; }
-        public string LicenseDescription { get; private set; }
-        public string LicenseURL { get; private set; }
-        public string TypographicFamily { get; private set; }
-        public string TypographicSubfamily { get; private set; }
-        public string CompatibleFullName { get; private set; }
-        public string SampleText { get; private set; } = string.Empty;
-        public string PostScriptCID { get; private set; }
-        public string WWSFamily { get; private set; }
-        public string WWSSubfamily { get; private set; }
-        public string LightBackgroundPalette { get; private set; }
-        public string DarkBackgroundPalette { get; private set; }
-        public string PostScriptNamePrefix { get; private set; }
-
-        internal FontDetails(BinaryReader binaryReader, List<TableRecord> tables)
-        {
-            initInteralFields(binaryReader, tables);
+            return records;
         }
 
         private void initInteralFields(BinaryReader binaryReader, List<TableRecord> tables)
@@ -82,7 +48,9 @@ namespace FontParser
             TableRecord nameTable = tables.Find(x => x.Tag == Constants.Strings.Tables.NAME);
             List<NameRecord> nameRecords = getNameRecords(binaryReader, nameTable);
 
-            foreach (NameRecord record in nameRecords)
+            List<NameRecord> filteredRecords = deduplicateRecords(nameRecords);
+
+            foreach (NameRecord record in filteredRecords)
             {
                 string data = extractStringFromNameRecord(binaryReader, record, nameTable.Offset);
                 switch (record.NameID)
@@ -167,5 +135,74 @@ namespace FontParser
                 }
             }
         }
+
+        private string extractStringFromNameRecord(BinaryReader binaryReader, NameRecord nameRecord, uint tableOffset)
+        {
+            uint stringOffset = tableOffset + nameRecord.StringOffset;
+
+            binaryReader.BaseStream.Seek(stringOffset, SeekOrigin.Begin);
+            byte[] nameByte = binaryReader.ReadBytes(nameRecord.Length);
+
+            IStringExtractor stringExtractor = StringExtractorFactory.CreateExtractor(nameRecord.PlatformID, nameRecord.EncodingID);
+            return stringExtractor.Extract(nameByte);
+        }
+
+        private List<NameRecord> getNameRecords(BinaryReader binaryReader, TableRecord nameTable)
+        {
+            binaryReader.BaseStream.Seek(nameTable.Offset, SeekOrigin.Begin);
+            binaryReader.Skip(2); //version
+            ushort nameRecordCount = binaryReader.ReadUInt16BE();
+            ushort storageOffset = binaryReader.ReadUInt16BE();
+
+            List<NameRecord> nameRecords = new List<NameRecord>();
+
+            for (int i = 0; i < nameRecordCount; i++)
+            {
+                NameRecord newRecord = new NameRecord(
+                    binaryReader.ReadUInt16BE(),
+                    binaryReader.ReadUInt16BE(),
+                    binaryReader.ReadUInt16BE(),
+                    binaryReader.ReadUInt16BE(),
+                    binaryReader.ReadUInt16BE(),
+                    (ushort)(binaryReader.ReadUInt16BE() + storageOffset));
+
+                nameRecords.Add(newRecord);
+            }
+
+            return nameRecords;
+        }
+
+        public string Copyright { get; private set; } 
+        public string Family { get; private set; }
+        public string Subfamily { get; private set; }
+        public string UniqueID { get; private set; }
+        public string FullName { get; private set; }
+        public string Version { get; private set; }
+        public string PostScriptName { get; private set; } 
+        public string Trademark { get; private set; }
+        public string Manufacturer { get; private set; }
+        public string Designer { get; private set; }
+        public string Description { get; private set; }
+        public string URLVendor { get; private set; }
+        public string URLDesigner { get; private set; }
+        public string LicenseDescription { get; private set; }
+        public string LicenseURL { get; private set; }
+        public string TypographicFamily { get; private set; }
+        public string TypographicSubfamily { get; private set; }
+        public string CompatibleFullName { get; private set; }
+        public string SampleText { get; private set; } = string.Empty;
+        public string PostScriptCID { get; private set; }
+        public string WWSFamily { get; private set; }
+        public string WWSSubfamily { get; private set; }
+        public string LightBackgroundPalette { get; private set; }
+        public string DarkBackgroundPalette { get; private set; }
+        public string PostScriptNamePrefix { get; private set; }
+
+        internal FontDetails(BinaryReader binaryReader, List<TableRecord> tables)
+        {
+            initInteralFields(binaryReader, tables);
+        }
+
+        
     }
 }

@@ -21,5 +21,6 @@ namespace FontParserTests
 
             Assert.Equal("Trueno", font.Details.FullName);
         }
+        
     }
 }

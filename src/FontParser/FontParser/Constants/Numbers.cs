@@ -70,6 +70,21 @@ namespace FontParser.Constants
             public const uint TYP1 = 0x74797031;
         }
 
+        internal static class LanguageID
+        {
+            internal static class Windows
+            {
+                public const ushort English = 1033;
+            }
+
+            internal static class Macintosh
+            {
+                public const ushort English = 0;
+            }
+        }
+
+        
+
 
     }
 }

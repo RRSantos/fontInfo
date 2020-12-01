@@ -6,15 +6,18 @@ namespace FontParser
 {
     internal class OS2Table
     {
-        private const uint BIT_7_MASK = 0b0000_0000_0100_0000;
+        private const ushort BIT_7_MASK = 0b0000_0000_0100_0000;
+
+        private readonly ushort version;
 
         private bool shouldUseTypoMetrics()
         {
-            if (Version < 4)
+            if (version < 4)
                 return false;
             return (FsSelection & BIT_7_MASK) > 0;
-        }
-        public ushort Version { get; private set; }
+        }        
+
+        
         public ushort FsSelection { get; private set; }
 
         public short TypoAscender { get; private set; }
@@ -24,17 +27,20 @@ namespace FontParser
         public ushort WinAscent { get; private set; }
         public ushort WinDescent { get; private set; }
 
+        public short Height { get; private set; }
+
         public bool ShouldUseTypoMetrics { get { return shouldUseTypoMetrics(); } }
 
-        public OS2Table(ushort version, ushort fsSelection, short typoAscender, short typoDescender, short typoLineGap, ushort winAscent, ushort winDescent)
+        public OS2Table(ushort version, ushort fsSelection, short typoAscender, short typoDescender, short typoLineGap, ushort winAscent, ushort winDescent, short height)
         {
-            Version = version;
+            this.version = version;
             FsSelection = fsSelection;
             TypoAscender = typoAscender;
             TypoDescender = typoDescender;
             TypoLineGap = typoLineGap;
             WinAscent = winAscent;
             WinDescent = winDescent;
+            Height = height;
         }
 
         public static OS2Table Create(BinaryReader binaryReader, TableRecord os2Table)
@@ -51,6 +57,13 @@ namespace FontParser
             ushort winAscent = binaryReader.ReadUInt16BE();
             ushort winDescent = binaryReader.ReadUInt16BE();
 
+            short height = 0;
+            if (version >=2)
+            {
+                binaryReader.Skip(4);
+                height = binaryReader.ReadInt16BE();
+            }
+
             return new OS2Table(
                 version,
                 fsSelection,
@@ -58,7 +71,8 @@ namespace FontParser
                 typoDescender,
                 typoLineGap,
                 winAscent,
-                winDescent);
+                winDescent, 
+                height);
         }
     }
 }
