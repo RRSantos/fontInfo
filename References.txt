@@ -6,6 +6,7 @@ https://www.graphicsmill.com/docs/gm/fonts-and-measuring-text.htm#FontMetrics
 
 http://westonthayer.com/writing/intro-to-font-metrics/
 
+https://opentype.js.org/font-inspector.html
 
 
 Others
