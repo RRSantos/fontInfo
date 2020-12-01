@@ -1,0 +1,14 @@
+Reference
+https://docs.microsoft.com/en-us/typography/opentype/spec/name#naming-table-header
+https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6.html
+
+https://www.graphicsmill.com/docs/gm/fonts-and-measuring-text.htm#FontMetrics
+
+http://westonthayer.com/writing/intro-to-font-metrics/
+
+
+
+Others
+https://formats.kaitai.io/ttf/csharp.html
+https://www.codeproject.com/Articles/2293/Retrieving-Font-Name-from-TTF-File
+https://docs.microsoft.com/en-us/dotnet/desktop/winforms/advanced/how-to-obtain-font-metrics?view=netframeworkdesktop-4.8
