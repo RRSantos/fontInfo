@@ -24,12 +24,16 @@ namespace FontParser
                 using (BinaryReader binaryReader = new BinaryReader(fs))
                 {
                     List<TableRecord> tables = TableRecord.GetAllTables(binaryReader);
-                    Details = new FontDetails(binaryReader, tables);
 
+                    TableRecord namingTableRecord = TableRecord.GetNamesTable(tables);
                     TableRecord os2TableRecord = TableRecord.GetOS2Table(tables);
-                    OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
                     TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
+
+                    NamingTable namingTable = new NamingTable(binaryReader, namingTableRecord);
+                    OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
                     HeadTable headTable = HeadTable.Create(binaryReader, headTableRecord);
+
+                    Details = new FontDetails(namingTable, headTable);
                     Metrics = new FontMetrics(os2Table, headTable);
 
                 }

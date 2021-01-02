@@ -5,173 +5,103 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using FontParser.Records;
+using FontParser.Tables;
 
 namespace FontParser
 {
     public class FontDetails
     {
 
-        private List<NameRecord> getWindowsEnglishRecords(List<NameRecord> allRecords)
+        private void initInteralFields(NamingTable namingTable, HeadTable headTable)
         {
-            return allRecords.FindAll(
-                r => r.PlatformID == Constants.Numbers.PlatformID.Windows && 
-                r.LanguageID == LanguageID.Windows.English
-                );
-        }
+            MajorVersion = headTable.MajorVersion;
+            MinorVersion = headTable.MinorVersion;
+            FontRevision = headTable.FontRevision;
 
-        private List<NameRecord> getMacintoshEnglishRecords(List<NameRecord> allRecords)
-        {
-            return allRecords.FindAll(
-                r => r.PlatformID == Constants.Numbers.PlatformID.Macintosh &&
-                r.LanguageID == LanguageID.Macintosh.English
-                );
-        }
-
-        private List<NameRecord> deduplicateRecords(List<NameRecord> allRecords)
-        {
-            List<NameRecord> records = getWindowsEnglishRecords(allRecords);
-
-            if (records.Count == 0)
-            {
-                records = getMacintoshEnglishRecords(allRecords);
-
-                if (records.Count == 0)
-                {
-                    records = allRecords;
-                }
-            }
-
-            return records;
-        }
-
-        private void initInteralFields(BinaryReader binaryReader, List<TableRecord> tables)
-        {
-            TableRecord nameTable = TableRecord.GetNamesTable(tables);
-            List<NameRecord> nameRecords = getNameRecords(binaryReader, nameTable);
-
-            List<NameRecord> filteredRecords = deduplicateRecords(nameRecords);
-
-            foreach (NameRecord record in filteredRecords)
-            {
-                string data = extractStringFromNameRecord(binaryReader, record, nameTable.Offset);
+            foreach (NameRecord record in namingTable.NameRecords)
+            {   
                 switch (record.NameID)
                 {
                     case NameID.CompatibleFullName:
-                        CompatibleFullName = data;
+                        CompatibleFullName = record.ExtractedData;
                         break;
                     case NameID.Copyright:
-                        Copyright = data;
+                        Copyright = record.ExtractedData;
                         break;
                     case NameID.DarkBackgroundPalette:
-                        DarkBackgroundPalette = data;
+                        DarkBackgroundPalette = record.ExtractedData;
                         break;
                     case NameID.Description:
-                        Description = data;
+                        Description = record.ExtractedData;
                         break;
                     case NameID.Designer:
-                        Designer = data;
+                        Designer = record.ExtractedData;
                         break;
                     case NameID.Family:
-                        Family = data;
+                        Family = record.ExtractedData;
                         break;
                     case NameID.FullName:
-                        FullName = data;
+                        FullName = record.ExtractedData;
                         break;
                     case NameID.LicenseDescription:
-                        LicenseDescription = data;
+                        LicenseDescription = record.ExtractedData;
                         break;
                     case NameID.LicenseURL:
-                        LicenseURL = data;
+                        LicenseURL = record.ExtractedData;
                         break;
                     case NameID.LightBackgroundPalette:
-                        LightBackgroundPalette = data;
+                        LightBackgroundPalette = record.ExtractedData;
                         break;
                     case NameID.Manufacturer:
-                        Manufacturer = data;
+                        Manufacturer = record.ExtractedData;
                         break;
                     case NameID.PostScriptCID:
-                        PostScriptCID = data;
+                        PostScriptCID = record.ExtractedData;
                         break;
                     case NameID.PostScriptName:
-                        PostScriptName = data;
+                        PostScriptName = record.ExtractedData;
                         break;
                     case NameID.PostScriptNamePrefix:
-                        PostScriptNamePrefix = data;
+                        PostScriptNamePrefix = record.ExtractedData;
                         break;
                     case NameID.SampleText:
-                        SampleText = data;
+                        SampleText = record.ExtractedData;
                         break;
                     case NameID.Subfamily:
-                        Subfamily = data;
+                        Subfamily = record.ExtractedData;
                         break;
                     case NameID.Trademark:
-                        Trademark = data;
+                        Trademark = record.ExtractedData;
                         break;
                     case NameID.TypographicFamily:
-                        TypographicFamily = data;
+                        TypographicFamily = record.ExtractedData;
                         break;
                     case NameID.TypographicSubfamily:
-                        TypographicSubfamily = data;
+                        TypographicSubfamily = record.ExtractedData;
                         break;
                     case NameID.UniqueID:
-                        UniqueID = data;
+                        UniqueID = record.ExtractedData;
                         break;
                     case NameID.URLDesigner:
-                        URLDesigner = data;
+                        URLDesigner = record.ExtractedData;
                         break;
                     case NameID.URLVendor:
-                        URLVendor = data;
+                        URLVendor = record.ExtractedData;
                         break;
                     case NameID.Version:
-                        Version = data;
+                        Version = record.ExtractedData;
                         break;
                     case NameID.WWSFamily:
-                        WWSFamily = data;
+                        WWSFamily = record.ExtractedData;
                         break;
                     case NameID.WWSSubfamily:
-                        WWSSubfamily = data;
+                        WWSSubfamily = record.ExtractedData;
                         break;
                     default:
                         break;
                 }
             }
-        }
-
-        private string extractStringFromNameRecord(BinaryReader binaryReader, NameRecord nameRecord, uint tableOffset)
-        {
-            uint stringOffset = tableOffset + nameRecord.StringOffset;
-
-            binaryReader.BaseStream.Seek(stringOffset, SeekOrigin.Begin);
-            byte[] nameByte = binaryReader.ReadBytes(nameRecord.Length);
-
-            IStringExtractor stringExtractor = StringExtractorFactory.CreateExtractor(nameRecord.PlatformID, nameRecord.EncodingID);
-            return stringExtractor.Extract(nameByte);
-        }
-
-        private List<NameRecord> getNameRecords(BinaryReader binaryReader, TableRecord nameTable)
-        {
-            binaryReader.BaseStream.Seek(nameTable.Offset, SeekOrigin.Begin);
-            binaryReader.Skip(2); //version
-            ushort nameRecordCount = binaryReader.ReadUInt16BE();
-            ushort storageOffset = binaryReader.ReadUInt16BE();
-
-            List<NameRecord> nameRecords = new List<NameRecord>();
-
-            for (int i = 0; i < nameRecordCount; i++)
-            {
-                NameRecord newRecord = new NameRecord(
-                    binaryReader.ReadUInt16BE(),
-                    binaryReader.ReadUInt16BE(),
-                    binaryReader.ReadUInt16BE(),
-                    binaryReader.ReadUInt16BE(),
-                    binaryReader.ReadUInt16BE(),
-                    (ushort)(binaryReader.ReadUInt16BE() + storageOffset));
-
-                nameRecords.Add(newRecord);
-            }
-
-            return nameRecords;
-        }
+        }        
 
         public string Copyright { get; private set; } 
         public string Family { get; private set; }
@@ -198,10 +128,13 @@ namespace FontParser
         public string LightBackgroundPalette { get; private set; }
         public string DarkBackgroundPalette { get; private set; }
         public string PostScriptNamePrefix { get; private set; }
+        public ushort MajorVersion { get; private set; }
+        public ushort MinorVersion { get; private set; }
+        public double FontRevision { get; private set; }
 
-        internal FontDetails(BinaryReader binaryReader, List<TableRecord> tables)
+        internal FontDetails(NamingTable namingTable, HeadTable headTable)
         {
-            initInteralFields(binaryReader, tables);
+            initInteralFields(namingTable, headTable);
         }
 
         

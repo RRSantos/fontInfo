@@ -13,14 +13,17 @@ namespace FontParser.Records
         public ushort Length { get; private set; }
         public ushort StringOffset { get; private set; }
 
-        public NameRecord(ushort platformID, ushort encodingID, ushort languageID, ushort nameID, ushort length, ushort stringOffset)
+        public string ExtractedData { get; private set; }
+
+        public NameRecord(ushort platformID, ushort encodingID, ushort languageID, ushort nameID, ushort length, ushort stringOffset, string data)
         {
             PlatformID = platformID;
             EncodingID = encodingID;
             LanguageID = languageID;
             NameID = nameID;
             Length = length;
-            StringOffset = stringOffset;    
+            StringOffset = stringOffset;
+            ExtractedData = data;
         }
 
         

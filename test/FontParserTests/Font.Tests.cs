@@ -25,6 +25,9 @@ namespace FontParserTests
             Assert.Equal("Roboto is a trademark of Google.", font.Details.Trademark);
             Assert.Equal("Roboto", font.Details.UniqueID);
             Assert.Equal("Version 2.137; 2017", font.Details.Version);
+            Assert.Equal(2.137, font.Details.FontRevision);
+            Assert.Equal(1, font.Details.MajorVersion);
+            Assert.Equal(0, font.Details.MinorVersion);
         }
 
         [Fact]
@@ -59,6 +62,9 @@ namespace FontParserTests
             Assert.Equal("TruenoRg", font.Details.PostScriptName);            
             Assert.Equal("Trueno v3.001b", font.Details.UniqueID);
             Assert.Equal("Version 3.001b ", font.Details.Version);
+            Assert.Equal(1, font.Details.FontRevision);
+            Assert.Equal(1, font.Details.MajorVersion);
+            Assert.Equal(0, font.Details.MinorVersion);
         }
 
         [Fact]
