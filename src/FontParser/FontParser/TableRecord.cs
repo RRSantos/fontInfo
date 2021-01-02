@@ -1,10 +1,27 @@
-﻿using System;
+﻿using FontParser.Extension;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 
+[assembly: InternalsVisibleTo("FontParserTests")]
 namespace FontParser
 {
     internal class TableRecord
     {
+
+        private static void validateSfntVersion(uint sfntVersion)
+        {
+            if ((sfntVersion != Constants.Numbers.SFNTVersion.DEFAULT) &&
+                (sfntVersion != Constants.Numbers.SFNTVersion.OTTO) &&
+                (sfntVersion != Constants.Numbers.SFNTVersion.TRUE) &&
+                (sfntVersion != Constants.Numbers.SFNTVersion.TYP1))
+            {
+                throw new ArgumentException(string.Format(Constants.Errors.SFNT.UNKNOW_VERSION, sfntVersion));
+            }
+        }
+
         private void validateTagByteContent(byte[] tagByte)
         {
             if (tagByte.Length != 4)
@@ -44,6 +61,51 @@ namespace FontParser
             CheckSum = checksum;
             Offset = offset;
             Length = lenght;
+        }
+
+        public static TableRecord GetOS2Table(List<TableRecord> allTables)
+        {
+            TableRecord os2TableRecord = allTables.Find(t => t.Tag == Constants.Strings.Tables.OS2);
+
+            return os2TableRecord;
+        }
+
+        public static TableRecord GetNamesTable(List<TableRecord> allTables)
+        {   
+            TableRecord namesTableRecord = allTables.Find(t => t.Tag == Constants.Strings.Tables.NAME);
+
+            return namesTableRecord;
+        }
+
+        public static TableRecord GetHeadTable(List<TableRecord> allTables)
+        {
+            TableRecord namesTableRecord = allTables.Find(t => t.Tag == Constants.Strings.Tables.HEAD);
+
+            return namesTableRecord;
+        }
+
+        public static List<TableRecord> GetAllTables(BinaryReader binaryReader)
+        {
+            uint sfntVersion = binaryReader.ReadUInt32BE();
+            validateSfntVersion(sfntVersion);
+            uint tableCount = binaryReader.ReadUInt16BE();
+
+            binaryReader.Skip(6);
+
+            List<TableRecord> tables = new List<TableRecord>();
+
+            for (int i = 0; i < tableCount; i++)
+            {
+                TableRecord record = new TableRecord(
+                    binaryReader.ReadBytes(4),
+                    binaryReader.ReadUInt32BE(),
+                    binaryReader.ReadUInt32BE(),
+                    binaryReader.ReadUInt32BE());
+
+                tables.Add(record);
+            }
+
+            return tables;
         }
 
     }

@@ -45,7 +45,7 @@ namespace FontParser
 
         private void initInteralFields(BinaryReader binaryReader, List<TableRecord> tables)
         {
-            TableRecord nameTable = tables.Find(x => x.Tag == Constants.Strings.Tables.NAME);
+            TableRecord nameTable = TableRecord.GetNamesTable(tables);
             List<NameRecord> nameRecords = getNameRecords(binaryReader, nameTable);
 
             List<NameRecord> filteredRecords = deduplicateRecords(nameRecords);

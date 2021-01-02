@@ -1,10 +1,12 @@
 ﻿using FontParser.Extension;
 using System.IO;
+using System.Runtime.CompilerServices;
 
-
+[assembly: InternalsVisibleTo("FontParserTests")]
 namespace FontParser
 {
-    internal class OS2Table
+    
+    internal  class OS2Table
     {
         private const ushort BIT_7_MASK = 0b0000_0000_0100_0000;
 
@@ -60,7 +62,7 @@ namespace FontParser
             short height = 0;
             if (version >=2)
             {
-                binaryReader.Skip(4);
+                binaryReader.Skip(8);
                 height = binaryReader.ReadInt16BE();
             }
 

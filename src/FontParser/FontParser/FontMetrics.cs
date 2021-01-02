@@ -8,25 +8,21 @@ namespace FontParser
     public class FontMetrics
     {
 
-        private void initInteralFields(BinaryReader binaryReader, List<TableRecord> tables)
+        private void initInteralFields(OS2Table os2Table)
         {
-            TableRecord os2TableRecord = tables.Find(t => t.Tag == Constants.Strings.Tables.OS2);
-            OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
-
+            //TableRecord os2TableRecord = TableRecord.GetOS2Table(tables);
+            //OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
+            //TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
 
             Ascender = os2Table.ShouldUseTypoMetrics ? (ushort)os2Table.TypoAscender : os2Table.WinAscent;
             Descender = os2Table.ShouldUseTypoMetrics ? (ushort)os2Table.TypoDescender : os2Table.WinDescent;
-            LineSpacing = (ushort)(Ascender - Descender + os2Table.TypoLineGap);
-
-            //Baseline;
-            //Height;
-            //BlackBoxHeight;
-            //BlackBoxWidth;
-
-
+            Height = Ascender + Descender;
+            LineSpacing = (ushort)(Height + os2Table.TypoLineGap);
+            
         }
 
-        public uint Baseline { get; private set; }
+        public uint UnitsPerEm { get; private set; }
+
         public uint Ascender { get; private set; }
 
         public uint Descender { get; private set; }
@@ -34,13 +30,9 @@ namespace FontParser
 
         public uint LineSpacing { get; private set; }
 
-        public uint BlackBoxHeight { get; private set; }
-
-        public uint BlackBoxWidth{ get; private set; }
-
-        internal FontMetrics(BinaryReader binaryReader, List<TableRecord> tables)
+        internal FontMetrics(OS2Table os2Table)
         {
-            initInteralFields(binaryReader, tables);
+            initInteralFields(os2Table);
         }
         
     }
