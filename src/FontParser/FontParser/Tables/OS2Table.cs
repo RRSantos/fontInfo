@@ -1,9 +1,10 @@
 ﻿using FontParser.Extension;
+using FontParser.Records;
 using System.IO;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("FontParserTests")]
-namespace FontParser
+namespace FontParser.Tables
 {
     
     internal  class OS2Table

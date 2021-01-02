@@ -1,7 +1,10 @@
 ﻿using FontParser.Extension;
+using FontParser.Tables;
+using FontParser.Records;
 using System;
 using System.Collections.Generic;
 using System.IO;
+//using static FontParser.Constants.Errors;
 
 namespace FontParser
 {
@@ -25,7 +28,9 @@ namespace FontParser
 
                     TableRecord os2TableRecord = TableRecord.GetOS2Table(tables);
                     OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
-                    Metrics = new FontMetrics(os2Table);
+                    TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
+                    HeadTable headTable = HeadTable.Create(binaryReader, headTableRecord);
+                    Metrics = new FontMetrics(os2Table, headTable);
 
                 }
                     

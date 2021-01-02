@@ -1,22 +1,21 @@
 ﻿using Xunit;
-using FontParser;
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using FontParser.Tables;
+using FontParser.Records;
 
-namespace FontParserTests
+namespace FontParserTests.Tables
 {
     public class OS2TableTests
     {
-        const string ttfFontFilename = @"fonts/Roboto-Regular.ttf";
-        const string otfFontFilename = @"fonts/Trueno-wml2.otf";
+        
         
 
         [Fact]
         public void ShouldLoadOS2TableValuesForTTF()
         {
-            using (FileStream fs = new FileStream(ttfFontFilename, FileMode.Open, FileAccess.Read))
+            using (FileStream fs = new FileStream(Constants.TTFFontFilename, FileMode.Open, FileAccess.Read))
             {
                 using (BinaryReader binaryReader = new BinaryReader(fs))
                 {
@@ -41,7 +40,7 @@ namespace FontParserTests
         [Fact]
         public void ShouldLoadOS2TableValuesForOTF()
         {
-            using (FileStream fs = new FileStream(otfFontFilename, FileMode.Open, FileAccess.Read))
+            using (FileStream fs = new FileStream(Constants.OTFFontFilename, FileMode.Open, FileAccess.Read))
             {
                 using (BinaryReader binaryReader = new BinaryReader(fs))
                 {

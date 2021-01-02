@@ -4,15 +4,12 @@ using FontParser;
 namespace FontParserTests
 {
     public class FontTests
-    {
-
-        const string ttfFontFilename = @"fonts/Roboto-Regular.ttf";
-        const string otfFontFilename = @"fonts/Trueno-wml2.otf";
+    {   
 
         [Fact]
         public void ShouldReadDetailsForTTFFont()
         {
-            Font font = new Font(ttfFontFilename);
+            Font font = new Font(Constants.TTFFontFilename);
             
             
             Assert.Equal("Copyright 2011 Google Inc. All Rights Reserved.", font.Details.Copyright);
@@ -33,14 +30,13 @@ namespace FontParserTests
         [Fact]
         public void ShouldReadMetricsForTTFFont()
         {
-            Font font = new Font(ttfFontFilename);
-
-
+            Font font = new Font(Constants.TTFFontFilename);
             
             Assert.Equal((uint)1946, font.Metrics.Ascender);
             Assert.Equal((uint)512, font.Metrics.Descender);
             Assert.Equal((uint)1946 + 512, font.Metrics.Height);
-            Assert.Equal((uint)1946 + 512 + 102, font.Metrics.LineSpacing); 
+            Assert.Equal((uint)1946 + 512 + 102, font.Metrics.LineSpacing);
+            Assert.Equal((uint)2048, font.Metrics.UnitsPerEm);
 
         }
 
@@ -48,7 +44,7 @@ namespace FontParserTests
         [Fact]
         public void ShouldReadDetailsForOTFFont()
         {
-            Font font = new Font(otfFontFilename);
+            Font font = new Font(Constants.OTFFontFilename);
 
             Assert.Equal("Copyright (c) 2014 by Julieta Ulanovsky. All rights reserved, Design Modifications and new weights 2015, Jasper @ Cannot Into Space Fonts", font.Details.Copyright);
             Assert.Equal("Julieta Ulanovsky", font.Details.Designer);
@@ -64,6 +60,19 @@ namespace FontParserTests
             Assert.Equal("Trueno v3.001b", font.Details.UniqueID);
             Assert.Equal("Version 3.001b ", font.Details.Version);
         }
-        
+
+        [Fact]
+        public void ShouldReadMetricsForOTFFont()
+        {
+            Font font = new Font(Constants.OTFFontFilename);
+
+            Assert.Equal((uint)1006, font.Metrics.Ascender);
+            Assert.Equal((uint)194, font.Metrics.Descender);
+            Assert.Equal((uint)1006 + 194, font.Metrics.Height);
+            Assert.Equal((uint)1006 + 194 + 0, font.Metrics.LineSpacing);
+            Assert.Equal((uint)1000, font.Metrics.UnitsPerEm);
+
+        }
+
     }
 }

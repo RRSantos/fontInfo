@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FontParser
+namespace FontParser.Records
 {
     internal class NameRecord
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FontParser.Tables;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -8,17 +9,13 @@ namespace FontParser
     public class FontMetrics
     {
 
-        private void initInteralFields(OS2Table os2Table)
+        private void initInteralFields(OS2Table os2Table, HeadTable headTable)
         {
-            //TableRecord os2TableRecord = TableRecord.GetOS2Table(tables);
-            //OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
-            //TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
-
             Ascender = os2Table.ShouldUseTypoMetrics ? (ushort)os2Table.TypoAscender : os2Table.WinAscent;
             Descender = os2Table.ShouldUseTypoMetrics ? (ushort)os2Table.TypoDescender : os2Table.WinDescent;
             Height = Ascender + Descender;
             LineSpacing = (ushort)(Height + os2Table.TypoLineGap);
-            
+            UnitsPerEm = headTable.UnitsPerEm;            
         }
 
         public uint UnitsPerEm { get; private set; }
@@ -30,9 +27,9 @@ namespace FontParser
 
         public uint LineSpacing { get; private set; }
 
-        internal FontMetrics(OS2Table os2Table)
+        internal FontMetrics(OS2Table os2Table, HeadTable headTable)
         {
-            initInteralFields(os2Table);
+            initInteralFields(os2Table, headTable);
         }
         
     }

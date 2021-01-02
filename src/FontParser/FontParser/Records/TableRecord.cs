@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 
 [assembly: InternalsVisibleTo("FontParserTests")]
-namespace FontParser
+namespace FontParser.Records
 {
     internal class TableRecord
     {
