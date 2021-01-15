@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>FontInfo</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>Ramos</Authors>
+    <Company>Ramos</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>
