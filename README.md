@@ -19,8 +19,8 @@ Console.WriteLine($"Font fullname: {font.Metrics.LineSpacing})";
 
 ```
 
-## Avaliable properties 
-All font information can be accessed by ``Details`` and ``Metrics`` groups.
+## Available properties 
+All font informations can be accessed by ``Details`` and ``Metrics`` groups.
 
 |Group|Property|
 |---|---|
