@@ -1,10 +1,10 @@
-﻿using FontParser.Records;
-using FontParser.Tables;
+﻿using FontInfo.Records;
+using FontInfo.Tables;
 using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
-namespace FontParserTests.Tables
+namespace FontInfoTests.Tables
 {
 
     public class HeadTableTests

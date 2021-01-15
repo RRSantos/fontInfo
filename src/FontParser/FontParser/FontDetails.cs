@@ -1,13 +1,13 @@
-﻿using static FontParser.Constants.Numbers;
-using FontParser.Extension;
-using FontParser.StringExtractor;
+﻿using static FontInfo.Constants.Numbers;
+using FontInfo.Extension;
+using FontInfo.StringExtractor;
 using System.Collections.Generic;
 using System.IO;
 using System;
-using FontParser.Records;
-using FontParser.Tables;
+using FontInfo.Records;
+using FontInfo.Tables;
 
-namespace FontParser
+namespace FontInfo
 {
     public class FontDetails
     {

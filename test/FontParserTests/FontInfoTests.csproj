@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FontParser\FontParser\FontParser.csproj" />
+    <ProjectReference Include="..\..\src\FontParser\FontParser\FontInfo.csproj" />
   </ItemGroup>
 
   <ItemGroup>

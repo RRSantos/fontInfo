@@ -1,12 +1,12 @@
-﻿using FontParser.Extension;
-using FontParser.Tables;
-using FontParser.Records;
+﻿using FontInfo.Extension;
+using FontInfo.Tables;
+using FontInfo.Records;
 using System;
 using System.Collections.Generic;
 using System.IO;
 //using static FontParser.Constants.Errors;
 
-namespace FontParser
+namespace FontInfo
 {
     
     public class Font

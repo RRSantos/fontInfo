@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace FontParser.StringExtractor
+namespace FontInfo.StringExtractor
 {
     internal class WindowsStringExtractor : IStringExtractor
     {

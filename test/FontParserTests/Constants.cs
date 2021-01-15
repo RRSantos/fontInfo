@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FontParserTests
+namespace FontInfoTests
 {
     static class Constants
     {

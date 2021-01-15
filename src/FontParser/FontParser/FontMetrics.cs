@@ -1,10 +1,10 @@
-﻿using FontParser.Tables;
+﻿using FontInfo.Tables;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace FontParser
+namespace FontInfo
 {
     public class FontMetrics
     {

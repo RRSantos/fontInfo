@@ -1,13 +1,13 @@
-﻿using FontParser.Extension;
-using FontParser.Records;
-using FontParser.StringExtractor;
+﻿using FontInfo.Extension;
+using FontInfo.Records;
+using FontInfo.StringExtractor;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using static FontParser.Constants.Numbers;
+using static FontInfo.Constants.Numbers;
 
-namespace FontParser.Tables
+namespace FontInfo.Tables
 {
     internal class NamingTable
     {

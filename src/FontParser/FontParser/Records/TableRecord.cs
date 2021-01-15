@@ -1,12 +1,12 @@
-﻿using FontParser.Extension;
+﻿using FontInfo.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-[assembly: InternalsVisibleTo("FontParserTests")]
-namespace FontParser.Records
+[assembly: InternalsVisibleTo("FontInfoTests")]
+namespace FontInfo.Records
 {
     internal class TableRecord
     {

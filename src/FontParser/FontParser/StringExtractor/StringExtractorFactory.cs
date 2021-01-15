@@ -1,7 +1,7 @@
-﻿using static FontParser.Constants.Numbers;
+﻿using static FontInfo.Constants.Numbers;
 using System;
 
-namespace FontParser.StringExtractor
+namespace FontInfo.StringExtractor
 {
     internal static class StringExtractorFactory
     {

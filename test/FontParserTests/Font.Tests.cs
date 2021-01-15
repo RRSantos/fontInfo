@@ -1,7 +1,7 @@
 using Xunit;
-using FontParser;
+using FontInfo;
 
-namespace FontParserTests
+namespace FontInfoTests
 {
     public class FontTests
     {   

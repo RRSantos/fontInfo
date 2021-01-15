@@ -1,8 +1,8 @@
-﻿using FontParser.Extension;
-using FontParser.Records;
+﻿using FontInfo.Extension;
+using FontInfo.Records;
 using System.IO;
 
-namespace FontParser.Tables
+namespace FontInfo.Tables
 {
     internal class HeadTable
     {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using FontParser.Tables;
-using FontParser.Records;
+using FontInfo.Tables;
+using FontInfo.Records;
 
-namespace FontParserTests.Tables
+namespace FontInfoTests.Tables
 {
     public class OS2TableTests
     {

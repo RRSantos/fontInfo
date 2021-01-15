@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace FontParser.Extension
+namespace FontInfo.Extension
 {
     internal static class BinaryReaderExtension
     {

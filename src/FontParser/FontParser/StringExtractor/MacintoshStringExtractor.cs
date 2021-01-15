@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FontParser.StringExtractor
+namespace FontInfo.StringExtractor
 {
     class MacintoshStringExtractor : IStringExtractor
     {

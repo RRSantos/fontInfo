@@ -1,4 +1,4 @@
-﻿namespace FontParser.StringExtractor
+﻿namespace FontInfo.StringExtractor
 {
     internal interface IStringExtractor
     {
