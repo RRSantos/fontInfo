@@ -1,9 +1,13 @@
-# fontInfo
+# FontInfo
 Library to read basic informations from TTF/OTF files.
 
 ## Usage
 
 ```csharp
+using FontInfo;
+
+[...]
+
 // Create new instace of Font class for font myFontName.ttf
 Font font = new Font("myFontName.ttf");
 
