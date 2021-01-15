@@ -1,5 +1,7 @@
 # FontInfo
-Library to read basic informations from TTF/OTF files.
+Library to read basic informations from TTF/OTF files. 
+
+![.NET](https://github.com/RRSantos/fontInfo/workflows/.NET/badge.svg)
 
 ## Usage
 
