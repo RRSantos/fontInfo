@@ -7,6 +7,10 @@
     <Authors>Ramos</Authors>
     <Company>Ramos</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/RRSantos/fontInfo</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/RRSantos/fontInfo</RepositoryUrl>
+    <PackageTags>ttf otf font</PackageTags>    
   </PropertyGroup>
 
 </Project>
