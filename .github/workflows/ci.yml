@@ -1,4 +1,4 @@
-name: CI for FontInfo
+name: CI build 
 
 on:
   push:
