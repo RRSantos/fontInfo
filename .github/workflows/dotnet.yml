@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build src/FontInfo.sln --no-restore  --configuration Release
     - name: Test
-      run: dotnet test test/FontInfoTests/FontInfoTests.csproj --no-build --verbosity normal
+      run: dotnet test test/FontInfoTests/FontInfoTests.csproj --no-build --verbosity normal --configuration Release
       
     - name: Publish NuGet
   # You may pin to the exact commit or the version.
