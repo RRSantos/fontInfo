@@ -14,10 +14,10 @@ using FontInfo;
 Font font = new Font("myFontName.ttf");
 
 // Accessing property FullName (FontDetails class)
-Console.WriteLine($"Font fullname: {font.Details.FullName})";            
+Console.WriteLine($"Font fullname: {font.Details.FullName}");
 
 // Accessing property LineSpacing (FontMetrics  class)
-Console.WriteLine($"Font fullname: {font.Metrics.LineSpacing})";
+Console.WriteLine($"Font fullname: {font.Metrics.LineSpacing}");
 
 ```
 
