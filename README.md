@@ -1,11 +1,11 @@
 # FontInfo
 Library to read basic informations from TTF/OTF files. 
 
-CI Build
-![CI for FontInfo](https://github.com/RRSantos/fontInfo/workflows/CI%20for%20FontInfo/badge.svg)
 
-Package publish
-![Build and Publish package](https://github.com/RRSantos/fontInfo/workflows/Build%20and%20Publish%20package/badge.svg)
+![CI](https://github.com/RRSantos/fontInfo/workflows/CI%20for%20FontInfo/badge.svg)
+
+
+![Publish package](https://github.com/RRSantos/fontInfo/workflows/Build%20and%20Publish%20package/badge.svg)
 
 ## Usage
 
