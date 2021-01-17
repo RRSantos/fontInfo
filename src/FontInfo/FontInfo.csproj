@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>FontInfo</PackageId>
-    <Version>0.0.1</Version>
-    <Authors>Ramos</Authors>
-    <Company>Ramos</Company>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.2</Version>
+    <Authors>rodrigo_ramos</Authors>
+    <Company>rodrigo_ramos</Company>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/RRSantos/fontInfo</PackageProjectUrl>
     <RepositoryUrl>https://github.com/RRSantos/fontInfo</RepositoryUrl>
-    <PackageTags>ttf otf font</PackageTags>    
+    <PackageTags>ttf otf font truetype "true type"</PackageTags>
+    <Description>Library to read basic informations from TTF/OTF files.</Description>    
   </PropertyGroup>
 
 </Project>
