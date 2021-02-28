@@ -1,5 +1,6 @@
 using Xunit;
 using FontInfo;
+using System.Threading.Tasks;
 
 namespace FontInfoTests
 {
@@ -7,9 +8,9 @@ namespace FontInfoTests
     {   
 
         [Fact]
-        public void ShouldReadDetailsForTTFFont()
+        public async Task ShouldReadDetailsForTTFFont()
         {
-            Font font = Font.Create(Constants.TTFFontFilename).Result;
+            Font font = await Font.Create(Constants.TTFFontFilename);
             
             
             Assert.Equal("Copyright 2011 Google Inc. All Rights Reserved.", font.Details.Copyright);
@@ -31,9 +32,9 @@ namespace FontInfoTests
         }
 
         [Fact]
-        public void ShouldReadMetricsForTTFFont()
+        public async Task ShouldReadMetricsForTTFFont()
         {
-            Font font = Font.Create(Constants.TTFFontFilename).Result;
+            Font font = await Font.Create(Constants.TTFFontFilename);
             
             Assert.Equal((uint)1946, font.Metrics.Ascender);
             Assert.Equal((uint)512, font.Metrics.Descender);
@@ -45,9 +46,9 @@ namespace FontInfoTests
 
 
         [Fact]
-        public void ShouldReadDetailsForOTFFont()
+        public async Task ShouldReadDetailsForOTFFont()
         {
-            Font font = Font.Create(Constants.OTFFontFilename).Result;
+            Font font = await Font.Create(Constants.OTFFontFilename);
 
             Assert.Equal("Copyright (c) 2014 by Julieta Ulanovsky. All rights reserved, Design Modifications and new weights 2015, Jasper @ Cannot Into Space Fonts", font.Details.Copyright);
             Assert.Equal("Julieta Ulanovsky", font.Details.Designer);
@@ -68,9 +69,9 @@ namespace FontInfoTests
         }
 
         [Fact]
-        public void ShouldReadMetricsForOTFFont()
+        public async Task ShouldReadMetricsForOTFFont()
         {
-            Font font = Font.Create(Constants.OTFFontFilename).Result;
+            Font font = await Font.Create(Constants.OTFFontFilename);
 
             Assert.Equal((uint)1006, font.Metrics.Ascender);
             Assert.Equal((uint)194, font.Metrics.Descender);

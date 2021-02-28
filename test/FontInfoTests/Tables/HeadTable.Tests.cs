@@ -4,6 +4,7 @@ using FontInfo.Tables;
 using System.Collections.Generic;
 using System.IO;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace FontInfoTests.Tables
 {
@@ -12,15 +13,15 @@ namespace FontInfoTests.Tables
     {
 
         [Fact]
-        public void ShouldLoadHeadTableValuesForTTF()
+        public async Task ShouldLoadHeadTableValuesForTTF()
         {
             using (FileStream fs = new FileStream(Constants.TTFFontFilename, FileMode.Open, FileAccess.Read))
             {
                 using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader).Result;
+                    List<TableRecord> tables = await TableRecord.GetAllTables(binaryReader);
                     TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
-                    HeadTable headTable = HeadTable.Create(binaryReader, headTableRecord).Result;
+                    HeadTable headTable = await HeadTable.Create(binaryReader, headTableRecord);
 
                     Assert.Equal(1, headTable.MajorVersion);
                     Assert.Equal(0, headTable.MinorVersion);
@@ -34,15 +35,15 @@ namespace FontInfoTests.Tables
         }
 
         [Fact]
-        public void ShouldLoadHeadTableValuesForOTF()
+        public async Task ShouldLoadHeadTableValuesForOTF()
         {
             using (FileStream fs = new FileStream(Constants.OTFFontFilename, FileMode.Open, FileAccess.Read))
             {
                 using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader).Result;
+                    List<TableRecord> tables = await TableRecord.GetAllTables(binaryReader);
                     TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
-                    HeadTable headTable = HeadTable.Create(binaryReader, headTableRecord).Result;
+                    HeadTable headTable = await HeadTable.Create(binaryReader, headTableRecord);
 
                     Assert.Equal(1, headTable.MajorVersion);
                     Assert.Equal(0, headTable.MinorVersion);
