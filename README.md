@@ -22,7 +22,7 @@ using FontInfo;
 [...]
 
 // Create new instace of Font class for font 'myFontName.ttf' asynchronously
-Font font = await Font.Create("myFontName.ttf");
+Font font = await Font.CreateAsync("myFontName.ttf");
 
 // Accessing property FullName (FontDetails class)
 Console.WriteLine($"Font fullname: {font.Details.FullName}");

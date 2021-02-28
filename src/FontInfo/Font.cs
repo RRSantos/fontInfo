@@ -41,7 +41,6 @@ namespace FontInfo
             await font.loadDataAsync();
             return font;
         }
-        
 
         public FontMetrics Metrics { get; private set; }
 
