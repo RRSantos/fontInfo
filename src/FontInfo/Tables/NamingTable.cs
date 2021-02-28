@@ -10,23 +10,23 @@ namespace FontInfo.Tables
 {
     internal class NamingTable
     {
-        public static async Task<NamingTable> Create(AsyncBinaryReader binaryReader, TableRecord namingTableRecord)
+        public static async Task<NamingTable> CreateAsync(AsyncBinaryReader binaryReader, TableRecord namingTableRecord)
         {
             NamingTable table = new NamingTable(binaryReader, namingTableRecord);
-            await table.loadData();
+            await table.loadDataAsync();
             return table;
             
         }
         private readonly AsyncBinaryReader binaryReader;
         private readonly TableRecord namingTableRecord;
         
-        private async Task loadData()
+        private async Task loadDataAsync()
         {   
-            List<NameRecord> nameRecords = await getNameRecords();
+            List<NameRecord> nameRecords = await getNameRecordsAsync();
             NameRecords =  deduplicateRecords(nameRecords);
         }
 
-        private async Task<string> extractStringFromNameRecord(AsyncBinaryReader binaryReader, 
+        private async Task<string> extractStringFromNameRecordAsync(AsyncBinaryReader binaryReader, 
             uint tableOffset, 
             ushort stringOffset, 
             ushort stringLength,
@@ -36,31 +36,31 @@ namespace FontInfo.Tables
             uint totalOffset = tableOffset + stringOffset;
 
             binaryReader.BaseStream.Seek(totalOffset, SeekOrigin.Begin);
-            byte[] nameByte = await binaryReader.ReadBytes(stringLength);
+            byte[] nameByte = await binaryReader.ReadBytesAsync(stringLength);
 
             IStringExtractor stringExtractor = StringExtractorFactory.CreateExtractor(platformID, encodingID);
             return stringExtractor.Extract(nameByte);
         }
 
-        private async Task<List<NameRecord>> getNameRecords()
+        private async Task<List<NameRecord>> getNameRecordsAsync()
         {
             binaryReader.BaseStream.Seek(namingTableRecord.Offset, SeekOrigin.Begin);
-            await binaryReader.Skip(2); //version
-            ushort nameRecordCount = await binaryReader.ReadUInt16BE();
-            ushort storageOffset = await binaryReader.ReadUInt16BE();
+            await binaryReader.SkipAsync(2); //version
+            ushort nameRecordCount = await binaryReader.ReadUInt16BEAsync();
+            ushort storageOffset = await binaryReader.ReadUInt16BEAsync();
 
             List<NameRecord> nameRecords = new List<NameRecord>();
 
             for (int i = 0; i < nameRecordCount; i++)
             {
-                ushort platformID = await binaryReader.ReadUInt16BE();
-                ushort encodingID = await binaryReader.ReadUInt16BE();
-                ushort languageID = await binaryReader.ReadUInt16BE();
-                ushort nameID = await binaryReader.ReadUInt16BE();
-                ushort length = await binaryReader.ReadUInt16BE();
-                ushort stringOffset = (ushort)(await binaryReader.ReadUInt16BE() + storageOffset);
+                ushort platformID = await binaryReader.ReadUInt16BEAsync();
+                ushort encodingID = await binaryReader.ReadUInt16BEAsync();
+                ushort languageID = await binaryReader.ReadUInt16BEAsync();
+                ushort nameID = await binaryReader.ReadUInt16BEAsync();
+                ushort length = await binaryReader.ReadUInt16BEAsync();
+                ushort stringOffset = (ushort)(await binaryReader.ReadUInt16BEAsync() + storageOffset);
                 long actualPosition = binaryReader.BaseStream.Position;
-                string data = await extractStringFromNameRecord(binaryReader, 
+                string data = await extractStringFromNameRecordAsync(binaryReader, 
                     namingTableRecord.Offset,  
                     stringOffset,
                     length,

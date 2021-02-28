@@ -22,15 +22,15 @@ namespace FontInfo.Tables
             UnitsPerEm = unitsPerEm;
         }
 
-        public static async Task<HeadTable> Create(AsyncBinaryReader binaryReader, TableRecord headTableRecord)
+        public static async Task<HeadTable> CreateAsync(AsyncBinaryReader binaryReader, TableRecord headTableRecord)
         {
             binaryReader.BaseStream.Seek(headTableRecord.Offset, SeekOrigin.Begin);
 
-            ushort majorVersion = await binaryReader.ReadUInt16BE();
-            ushort minorVersion = await binaryReader.ReadUInt16BE();
-            double revision = await binaryReader.ReadInt32FixedBE();
-            await binaryReader.Skip(10);
-            ushort unitsPerEm = await binaryReader.ReadUInt16BE();
+            ushort majorVersion = await binaryReader.ReadUInt16BEAsync();
+            ushort minorVersion = await binaryReader.ReadUInt16BEAsync();
+            double revision = await binaryReader.ReadInt32FixedBEAsync();
+            await binaryReader.SkipAsync(10);
+            ushort unitsPerEm = await binaryReader.ReadUInt16BEAsync();
 
             HeadTable headTable = new HeadTable(majorVersion, minorVersion, revision, unitsPerEm);
             

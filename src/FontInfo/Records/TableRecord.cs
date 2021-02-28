@@ -84,22 +84,22 @@ namespace FontInfo.Records
             return namesTableRecord;
         }
 
-        public static async Task<List<TableRecord>> GetAllTables(AsyncBinaryReader binaryReader)
+        public static async Task<List<TableRecord>> GetAllTablesAsync(AsyncBinaryReader binaryReader)
         {
-            uint sfntVersion = await binaryReader.ReadUInt32BE();
+            uint sfntVersion = await binaryReader.ReadUInt32BEAsync();
             validateSfntVersion(sfntVersion);
-            uint tableCount = await binaryReader.ReadUInt16BE();
+            uint tableCount = await binaryReader.ReadUInt16BEAsync();
 
-            await binaryReader.Skip(6);
+            await binaryReader.SkipAsync(6);
 
             List<TableRecord> tables = new List<TableRecord>();
 
             for (int i = 0; i < tableCount; i++)
             {
-                byte[] tagByte = await binaryReader.ReadBytes(4);
-                uint checksum = await binaryReader.ReadUInt32BE();
-                uint offset = await binaryReader.ReadUInt32BE();
-                uint length = await binaryReader.ReadUInt32BE();
+                byte[] tagByte = await binaryReader.ReadBytesAsync(4);
+                uint checksum = await binaryReader.ReadUInt32BEAsync();
+                uint offset = await binaryReader.ReadUInt32BEAsync();
+                uint length = await binaryReader.ReadUInt32BEAsync();
                 TableRecord record = new TableRecord(tagByte,checksum, offset, length);
 
                 tables.Add(record);

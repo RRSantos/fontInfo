@@ -12,21 +12,21 @@ namespace FontInfo
     {  
         private readonly string filename;
 
-        private async Task loadData()
+        private async Task loadDataAsync()
         {
             using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
             {
                 using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = await TableRecord.GetAllTables(binaryReader);
+                    List<TableRecord> tables = await TableRecord.GetAllTablesAsync(binaryReader);
 
                     TableRecord namingTableRecord = TableRecord.GetNamesTable(tables);
                     TableRecord os2TableRecord = TableRecord.GetOS2Table(tables);
                     TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
 
-                    NamingTable namingTable = await NamingTable.Create(binaryReader, namingTableRecord);
-                    OS2Table os2Table = await OS2Table.Create(binaryReader, os2TableRecord);
-                    HeadTable headTable = await HeadTable.Create(binaryReader, headTableRecord);
+                    NamingTable namingTable = await NamingTable.CreateAsync(binaryReader, namingTableRecord);
+                    OS2Table os2Table = await OS2Table.CreateAsync(binaryReader, os2TableRecord);
+                    HeadTable headTable = await HeadTable.CreateAsync(binaryReader, headTableRecord);
 
                     Details = new FontDetails(namingTable, headTable);
                     Metrics = new FontMetrics(os2Table, headTable);
@@ -35,10 +35,10 @@ namespace FontInfo
             }
         }
 
-        public static async Task<Font> Create(string fileName)
+        public static async Task<Font> CreateAsync(string fileName)
         {
             Font font = new Font(fileName);
-            await font.loadData();
+            await font.loadDataAsync();
             return font;
         }
         

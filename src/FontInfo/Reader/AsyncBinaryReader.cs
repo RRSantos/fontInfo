@@ -47,19 +47,19 @@ namespace FontInfo.Reader
             BaseStream.Close();
         }
 
-        public async Task Skip(int count)
+        public async Task SkipAsync(int count)
         {
             byte[] trash = new byte[count];
             await BaseStream.ReadAsync(trash , 0, count);
         }
-        public async Task<byte[]> ReadBytes(int count)
+        public async Task<byte[]> ReadBytesAsync(int count)
         {
             byte[] data = new byte[count];
             await BaseStream.ReadAsync(data, 0, count);
             return data;
         }
 
-        public async Task<ushort> ReadUInt16BE()
+        public async Task<ushort> ReadUInt16BEAsync()
         {
             byte[] data = new byte[2];
             await BaseStream.ReadAsync(data, 0, data.Length);
@@ -67,7 +67,7 @@ namespace FontInfo.Reader
             ushort result = toUInt16BE(data);
             return result;
         }
-        public async Task<short> ReadInt16BE()
+        public async Task<short> ReadInt16BEAsync()
         {
             byte[] data = new byte[2];
             await BaseStream.ReadAsync(data, 0, data.Length);
@@ -75,7 +75,7 @@ namespace FontInfo.Reader
             short result = toInt16BE(data);
             return result;
         }
-        public async Task<uint> ReadUInt32BE()
+        public async Task<uint> ReadUInt32BEAsync()
         {
             byte[] data = new byte[4];
             await BaseStream.ReadAsync(data, 0, data.Length);
@@ -84,10 +84,10 @@ namespace FontInfo.Reader
             return result;
         }
 
-        public async Task<double> ReadInt32FixedBE()
+        public async Task<double> ReadInt32FixedBEAsync()
         {   
-            short hi = await this.ReadInt16BE();
-            ushort lo = await this.ReadUInt16BE();
+            short hi = await this.ReadInt16BEAsync();
+            ushort lo = await this.ReadUInt16BEAsync();
             
             double result = Math.Round(((hi) + ((double)lo/ushort.MaxValue)) * 10000) / 10000;
             return result;

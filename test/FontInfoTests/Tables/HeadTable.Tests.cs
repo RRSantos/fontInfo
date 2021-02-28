@@ -13,15 +13,15 @@ namespace FontInfoTests.Tables
     {
 
         [Fact]
-        public async Task ShouldLoadHeadTableValuesForTTF()
+        public async Task ShouldLoadHeadTableValuesForTTFAsync()
         {
             using (FileStream fs = new FileStream(Constants.TTFFontFilename, FileMode.Open, FileAccess.Read))
             {
                 using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = await TableRecord.GetAllTables(binaryReader);
+                    List<TableRecord> tables = await TableRecord.GetAllTablesAsync(binaryReader);
                     TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
-                    HeadTable headTable = await HeadTable.Create(binaryReader, headTableRecord);
+                    HeadTable headTable = await HeadTable.CreateAsync(binaryReader, headTableRecord);
 
                     Assert.Equal(1, headTable.MajorVersion);
                     Assert.Equal(0, headTable.MinorVersion);
@@ -35,15 +35,15 @@ namespace FontInfoTests.Tables
         }
 
         [Fact]
-        public async Task ShouldLoadHeadTableValuesForOTF()
+        public async Task ShouldLoadHeadTableValuesForOTFAsync()
         {
             using (FileStream fs = new FileStream(Constants.OTFFontFilename, FileMode.Open, FileAccess.Read))
             {
                 using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = await TableRecord.GetAllTables(binaryReader);
+                    List<TableRecord> tables = await TableRecord.GetAllTablesAsync(binaryReader);
                     TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
-                    HeadTable headTable = await HeadTable.Create(binaryReader, headTableRecord);
+                    HeadTable headTable = await HeadTable.CreateAsync(binaryReader, headTableRecord);
 
                     Assert.Equal(1, headTable.MajorVersion);
                     Assert.Equal(0, headTable.MinorVersion);

@@ -8,9 +8,9 @@ namespace FontInfoTests
     {   
 
         [Fact]
-        public async Task ShouldReadDetailsForTTFFont()
+        public async Task ShouldReadDetailsForTTFFontAsync()
         {
-            Font font = await Font.Create(Constants.TTFFontFilename);
+            Font font = await Font.CreateAsync(Constants.TTFFontFilename);
             
             
             Assert.Equal("Copyright 2011 Google Inc. All Rights Reserved.", font.Details.Copyright);
@@ -32,9 +32,9 @@ namespace FontInfoTests
         }
 
         [Fact]
-        public async Task ShouldReadMetricsForTTFFont()
+        public async Task ShouldReadMetricsForTTFFontAsync()
         {
-            Font font = await Font.Create(Constants.TTFFontFilename);
+            Font font = await Font.CreateAsync(Constants.TTFFontFilename);
             
             Assert.Equal((uint)1946, font.Metrics.Ascender);
             Assert.Equal((uint)512, font.Metrics.Descender);
@@ -46,9 +46,9 @@ namespace FontInfoTests
 
 
         [Fact]
-        public async Task ShouldReadDetailsForOTFFont()
+        public async Task ShouldReadDetailsForOTFFontAsync()
         {
-            Font font = await Font.Create(Constants.OTFFontFilename);
+            Font font = await Font.CreateAsync(Constants.OTFFontFilename);
 
             Assert.Equal("Copyright (c) 2014 by Julieta Ulanovsky. All rights reserved, Design Modifications and new weights 2015, Jasper @ Cannot Into Space Fonts", font.Details.Copyright);
             Assert.Equal("Julieta Ulanovsky", font.Details.Designer);
@@ -69,9 +69,9 @@ namespace FontInfoTests
         }
 
         [Fact]
-        public async Task ShouldReadMetricsForOTFFont()
+        public async Task ShouldReadMetricsForOTFFontAsync()
         {
-            Font font = await Font.Create(Constants.OTFFontFilename);
+            Font font = await Font.CreateAsync(Constants.OTFFontFilename);
 
             Assert.Equal((uint)1006, font.Metrics.Ascender);
             Assert.Equal((uint)194, font.Metrics.Descender);

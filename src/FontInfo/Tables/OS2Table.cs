@@ -46,25 +46,25 @@ namespace FontInfo.Tables
             Height = height;
         }
 
-        public static async Task<OS2Table> Create(AsyncBinaryReader binaryReader, TableRecord os2Table)
+        public static async Task<OS2Table> CreateAsync(AsyncBinaryReader binaryReader, TableRecord os2Table)
         {
 
             binaryReader.BaseStream.Seek(os2Table.Offset, SeekOrigin.Begin);
-            ushort version = await binaryReader.ReadUInt16BE();
-            await binaryReader.Skip(60);
-            ushort fsSelection = await binaryReader.ReadUInt16BE();
-            await binaryReader.Skip(4);
-            short typoAscender = await binaryReader.ReadInt16BE();
-            short typoDescender = await binaryReader.ReadInt16BE();
-            short typoLineGap = await binaryReader.ReadInt16BE();
-            ushort winAscent = await binaryReader.ReadUInt16BE();
-            ushort winDescent = await binaryReader.ReadUInt16BE();
+            ushort version = await binaryReader.ReadUInt16BEAsync();
+            await binaryReader.SkipAsync(60);
+            ushort fsSelection = await binaryReader.ReadUInt16BEAsync();
+            await binaryReader.SkipAsync(4);
+            short typoAscender = await binaryReader.ReadInt16BEAsync();
+            short typoDescender = await binaryReader.ReadInt16BEAsync();
+            short typoLineGap = await binaryReader.ReadInt16BEAsync();
+            ushort winAscent = await binaryReader.ReadUInt16BEAsync();
+            ushort winDescent = await binaryReader.ReadUInt16BEAsync();
 
             short height = 0;
             if (version >=2)
             {
-                await binaryReader.Skip(8);
-                height = await binaryReader.ReadInt16BE();
+                await binaryReader.SkipAsync(8);
+                height = await binaryReader.ReadInt16BEAsync();
             }
 
             return new OS2Table(
