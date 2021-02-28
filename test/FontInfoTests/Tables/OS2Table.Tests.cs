@@ -1,9 +1,10 @@
 ﻿using Xunit;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using FontInfo.Tables;
 using FontInfo.Records;
+using FontInfo.Reader;
+using System.Threading.Tasks;
 
 namespace FontInfoTests.Tables
 {
@@ -13,15 +14,15 @@ namespace FontInfoTests.Tables
         
 
         [Fact]
-        public void ShouldLoadOS2TableValuesForTTF()
+        public async Task ShouldLoadOS2TableValuesForTTFAsync()
         {
             using (FileStream fs = new FileStream(Constants.TTFFontFilename, FileMode.Open, FileAccess.Read))
             {
-                using (BinaryReader binaryReader = new BinaryReader(fs))
+                using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader);
+                    List<TableRecord> tables = await TableRecord.GetAllTablesAsync(binaryReader);
                     TableRecord os2TableRecord = TableRecord.GetOS2Table(tables);
-                    OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
+                    OS2Table os2Table = await OS2Table.CreateAsync(binaryReader, os2TableRecord);
 
                     Assert.Equal(64, os2Table.FsSelection);
                     Assert.Equal(1082, os2Table.Height);
@@ -38,15 +39,15 @@ namespace FontInfoTests.Tables
         }
 
         [Fact]
-        public void ShouldLoadOS2TableValuesForOTF()
+        public async Task ShouldLoadOS2TableValuesForOTFAsync()
         {
             using (FileStream fs = new FileStream(Constants.OTFFontFilename, FileMode.Open, FileAccess.Read))
             {
-                using (BinaryReader binaryReader = new BinaryReader(fs))
+                using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader);
+                    List<TableRecord> tables = await TableRecord.GetAllTablesAsync(binaryReader);
                     TableRecord os2TableRecord = TableRecord.GetOS2Table(tables);
-                    OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
+                    OS2Table os2Table = await OS2Table.CreateAsync(binaryReader, os2TableRecord);
 
                     Assert.Equal(0, os2Table.FsSelection);
                     Assert.Equal(532, os2Table.Height);

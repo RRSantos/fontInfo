@@ -1,8 +1,10 @@
-﻿using FontInfo.Records;
+﻿using FontInfo.Reader;
+using FontInfo.Records;
 using FontInfo.Tables;
 using System.Collections.Generic;
 using System.IO;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace FontInfoTests.Tables
 {
@@ -11,15 +13,15 @@ namespace FontInfoTests.Tables
     {
 
         [Fact]
-        public void ShouldLoadHeadTableValuesForTTF()
+        public async Task ShouldLoadHeadTableValuesForTTFAsync()
         {
             using (FileStream fs = new FileStream(Constants.TTFFontFilename, FileMode.Open, FileAccess.Read))
             {
-                using (BinaryReader binaryReader = new BinaryReader(fs))
+                using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader);
+                    List<TableRecord> tables = await TableRecord.GetAllTablesAsync(binaryReader);
                     TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
-                    HeadTable headTable = HeadTable.Create(binaryReader, headTableRecord);
+                    HeadTable headTable = await HeadTable.CreateAsync(binaryReader, headTableRecord);
 
                     Assert.Equal(1, headTable.MajorVersion);
                     Assert.Equal(0, headTable.MinorVersion);
@@ -33,15 +35,15 @@ namespace FontInfoTests.Tables
         }
 
         [Fact]
-        public void ShouldLoadHeadTableValuesForOTF()
+        public async Task ShouldLoadHeadTableValuesForOTFAsync()
         {
             using (FileStream fs = new FileStream(Constants.OTFFontFilename, FileMode.Open, FileAccess.Read))
             {
-                using (BinaryReader binaryReader = new BinaryReader(fs))
+                using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader);
+                    List<TableRecord> tables = await TableRecord.GetAllTablesAsync(binaryReader);
                     TableRecord headTableRecord = TableRecord.GetHeadTable(tables);
-                    HeadTable headTable = HeadTable.Create(binaryReader, headTableRecord);
+                    HeadTable headTable = await HeadTable.CreateAsync(binaryReader, headTableRecord);
 
                     Assert.Equal(1, headTable.MajorVersion);
                     Assert.Equal(0, headTable.MinorVersion);

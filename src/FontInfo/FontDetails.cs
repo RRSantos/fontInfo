@@ -1,9 +1,4 @@
 ﻿using static FontInfo.Constants.Numbers;
-using FontInfo.Extension;
-using FontInfo.StringExtractor;
-using System.Collections.Generic;
-using System.IO;
-using System;
 using FontInfo.Records;
 using FontInfo.Tables;
 
