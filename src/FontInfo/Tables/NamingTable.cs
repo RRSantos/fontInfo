@@ -1,24 +1,32 @@
-﻿using FontInfo.Extension;
+﻿using FontInfo.Reader;
 using FontInfo.Records;
 using FontInfo.StringExtractor;
-using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using static FontInfo.Constants.Numbers;
 
 namespace FontInfo.Tables
 {
     internal class NamingTable
     {
-
-        private void initInteralFields(BinaryReader binaryReader, TableRecord namingTableRecord)
+        public static async Task<NamingTable> Create(AsyncBinaryReader binaryReader, TableRecord namingTableRecord)
+        {
+            NamingTable table = new NamingTable(binaryReader, namingTableRecord);
+            await table.loadData();
+            return table;
+            
+        }
+        private readonly AsyncBinaryReader binaryReader;
+        private readonly TableRecord namingTableRecord;
+        
+        private async Task loadData()
         {   
-            List<NameRecord> nameRecords = getNameRecords(binaryReader, namingTableRecord);
+            List<NameRecord> nameRecords = await getNameRecords();
             NameRecords =  deduplicateRecords(nameRecords);
         }
 
-        private string extractStringFromNameRecord(BinaryReader binaryReader, 
+        private async Task<string> extractStringFromNameRecord(AsyncBinaryReader binaryReader, 
             uint tableOffset, 
             ushort stringOffset, 
             ushort stringLength,
@@ -28,32 +36,32 @@ namespace FontInfo.Tables
             uint totalOffset = tableOffset + stringOffset;
 
             binaryReader.BaseStream.Seek(totalOffset, SeekOrigin.Begin);
-            byte[] nameByte = binaryReader.ReadBytes(stringLength);
+            byte[] nameByte = await binaryReader.ReadBytes(stringLength);
 
             IStringExtractor stringExtractor = StringExtractorFactory.CreateExtractor(platformID, encodingID);
             return stringExtractor.Extract(nameByte);
         }
 
-        private List<NameRecord> getNameRecords(BinaryReader binaryReader, TableRecord nameTable)
+        private async Task<List<NameRecord>> getNameRecords()
         {
-            binaryReader.BaseStream.Seek(nameTable.Offset, SeekOrigin.Begin);
-            binaryReader.Skip(2); //version
-            ushort nameRecordCount = binaryReader.ReadUInt16BE();
-            ushort storageOffset = binaryReader.ReadUInt16BE();
+            binaryReader.BaseStream.Seek(namingTableRecord.Offset, SeekOrigin.Begin);
+            await binaryReader.Skip(2); //version
+            ushort nameRecordCount = await binaryReader.ReadUInt16BE();
+            ushort storageOffset = await binaryReader.ReadUInt16BE();
 
             List<NameRecord> nameRecords = new List<NameRecord>();
 
             for (int i = 0; i < nameRecordCount; i++)
             {
-                ushort platformID = binaryReader.ReadUInt16BE();
-                ushort encodingID = binaryReader.ReadUInt16BE();
-                ushort languageID = binaryReader.ReadUInt16BE();
-                ushort nameID = binaryReader.ReadUInt16BE();
-                ushort length = binaryReader.ReadUInt16BE();
-                ushort stringOffset = (ushort)(binaryReader.ReadUInt16BE() + storageOffset);
+                ushort platformID = await binaryReader.ReadUInt16BE();
+                ushort encodingID = await binaryReader.ReadUInt16BE();
+                ushort languageID = await binaryReader.ReadUInt16BE();
+                ushort nameID = await binaryReader.ReadUInt16BE();
+                ushort length = await binaryReader.ReadUInt16BE();
+                ushort stringOffset = (ushort)(await binaryReader.ReadUInt16BE() + storageOffset);
                 long actualPosition = binaryReader.BaseStream.Position;
-                string data = extractStringFromNameRecord(binaryReader, 
-                    nameTable.Offset,  
+                string data = await extractStringFromNameRecord(binaryReader, 
+                    namingTableRecord.Offset,  
                     stringOffset,
                     length,
                     platformID,
@@ -111,9 +119,10 @@ namespace FontInfo.Tables
 
         public IReadOnlyList<NameRecord> NameRecords { get; private set; }
 
-        internal NamingTable (BinaryReader binaryReader, TableRecord namingTableRecord)
+        internal NamingTable (AsyncBinaryReader binaryReader, TableRecord namingTableRecord)
         {
-            initInteralFields(binaryReader, namingTableRecord);
+            this.binaryReader = binaryReader;
+            this.namingTableRecord = namingTableRecord;
         }
     }
 }

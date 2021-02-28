@@ -9,7 +9,7 @@ namespace FontInfoTests
         [Fact]
         public void ShouldReadDetailsForTTFFont()
         {
-            Font font = new Font(Constants.TTFFontFilename);
+            Font font = Font.Create(Constants.TTFFontFilename).Result;
             
             
             Assert.Equal("Copyright 2011 Google Inc. All Rights Reserved.", font.Details.Copyright);
@@ -33,7 +33,7 @@ namespace FontInfoTests
         [Fact]
         public void ShouldReadMetricsForTTFFont()
         {
-            Font font = new Font(Constants.TTFFontFilename);
+            Font font = Font.Create(Constants.TTFFontFilename).Result;
             
             Assert.Equal((uint)1946, font.Metrics.Ascender);
             Assert.Equal((uint)512, font.Metrics.Descender);
@@ -47,7 +47,7 @@ namespace FontInfoTests
         [Fact]
         public void ShouldReadDetailsForOTFFont()
         {
-            Font font = new Font(Constants.OTFFontFilename);
+            Font font = Font.Create(Constants.OTFFontFilename).Result;
 
             Assert.Equal("Copyright (c) 2014 by Julieta Ulanovsky. All rights reserved, Design Modifications and new weights 2015, Jasper @ Cannot Into Space Fonts", font.Details.Copyright);
             Assert.Equal("Julieta Ulanovsky", font.Details.Designer);
@@ -70,7 +70,7 @@ namespace FontInfoTests
         [Fact]
         public void ShouldReadMetricsForOTFFont()
         {
-            Font font = new Font(Constants.OTFFontFilename);
+            Font font = Font.Create(Constants.OTFFontFilename).Result;
 
             Assert.Equal((uint)1006, font.Metrics.Ascender);
             Assert.Equal((uint)194, font.Metrics.Descender);

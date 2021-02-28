@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>FontInfo</PackageId>
-    <Version>0.0.3</Version>
+    <Version>1.0.0</Version>
     <Authors>rodrigo_ramos</Authors>
     <Company>rodrigo_ramos</Company>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>

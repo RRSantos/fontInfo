@@ -1,9 +1,9 @@
 ﻿using Xunit;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using FontInfo.Tables;
 using FontInfo.Records;
+using FontInfo.Reader;
 
 namespace FontInfoTests.Tables
 {
@@ -17,11 +17,11 @@ namespace FontInfoTests.Tables
         {
             using (FileStream fs = new FileStream(Constants.TTFFontFilename, FileMode.Open, FileAccess.Read))
             {
-                using (BinaryReader binaryReader = new BinaryReader(fs))
+                using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader);
+                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader).Result;
                     TableRecord os2TableRecord = TableRecord.GetOS2Table(tables);
-                    OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
+                    OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord).Result;
 
                     Assert.Equal(64, os2Table.FsSelection);
                     Assert.Equal(1082, os2Table.Height);
@@ -42,11 +42,11 @@ namespace FontInfoTests.Tables
         {
             using (FileStream fs = new FileStream(Constants.OTFFontFilename, FileMode.Open, FileAccess.Read))
             {
-                using (BinaryReader binaryReader = new BinaryReader(fs))
+                using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
-                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader);
+                    List<TableRecord> tables = TableRecord.GetAllTables(binaryReader).Result;
                     TableRecord os2TableRecord = TableRecord.GetOS2Table(tables);
-                    OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord);
+                    OS2Table os2Table = OS2Table.Create(binaryReader, os2TableRecord).Result;
 
                     Assert.Equal(0, os2Table.FsSelection);
                     Assert.Equal(532, os2Table.Height);

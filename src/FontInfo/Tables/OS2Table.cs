@@ -1,8 +1,8 @@
-﻿using FontInfo.Extension;
+﻿using FontInfo.Reader;
 using FontInfo.Records;
 using System.IO;
 using System.Runtime.CompilerServices;
-
+using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("FontInfoTests")]
 namespace FontInfo.Tables
 {
@@ -46,25 +46,25 @@ namespace FontInfo.Tables
             Height = height;
         }
 
-        public static OS2Table Create(BinaryReader binaryReader, TableRecord os2Table)
+        public static async Task<OS2Table> Create(AsyncBinaryReader binaryReader, TableRecord os2Table)
         {
 
             binaryReader.BaseStream.Seek(os2Table.Offset, SeekOrigin.Begin);
-            ushort version = binaryReader.ReadUInt16BE();
-            binaryReader.Skip(60);
-            ushort fsSelection = binaryReader.ReadUInt16BE();
-            binaryReader.Skip(4);
-            short typoAscender = binaryReader.ReadInt16BE();
-            short typoDescender = binaryReader.ReadInt16BE();
-            short typoLineGap = binaryReader.ReadInt16BE();
-            ushort winAscent = binaryReader.ReadUInt16BE();
-            ushort winDescent = binaryReader.ReadUInt16BE();
+            ushort version = await binaryReader.ReadUInt16BE();
+            await binaryReader.Skip(60);
+            ushort fsSelection = await binaryReader.ReadUInt16BE();
+            await binaryReader.Skip(4);
+            short typoAscender = await binaryReader.ReadInt16BE();
+            short typoDescender = await binaryReader.ReadInt16BE();
+            short typoLineGap = await binaryReader.ReadInt16BE();
+            ushort winAscent = await binaryReader.ReadUInt16BE();
+            ushort winDescent = await binaryReader.ReadUInt16BE();
 
             short height = 0;
             if (version >=2)
             {
-                binaryReader.Skip(8);
-                height = binaryReader.ReadInt16BE();
+                await binaryReader.Skip(8);
+                height = await binaryReader.ReadInt16BE();
             }
 
             return new OS2Table(

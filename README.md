@@ -7,6 +7,13 @@ Library to read basic informations from TTF/OTF files.
 
 ![Package publish](https://github.com/RRSantos/fontInfo/workflows/Package%20publish/badge.svg)
 
+## Installing
+
+Install using NuGet
+
+```powershell
+PM > Install-Package FontInfo
+``` 
 ## Usage
 
 ```csharp
@@ -14,8 +21,8 @@ using FontInfo;
 
 [...]
 
-// Create new instace of Font class for font myFontName.ttf
-Font font = new Font("myFontName.ttf");
+// Create new instace of Font class for font 'myFontName.ttf' asynchronously
+Font font = await Font.Create("myFontName.ttf");
 
 // Accessing property FullName (FontDetails class)
 Console.WriteLine($"Font fullname: {font.Details.FullName}");
