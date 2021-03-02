@@ -1,16 +1,15 @@
 ﻿using FontInfo.Reader;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("FontInfoTests")]
 namespace FontInfo.Records
 {
     internal class TableRecord
     {
-
         private static void validateSfntVersion(uint sfntVersion)
         {
             if ((sfntVersion != Constants.Numbers.SFNTVersion.DEFAULT) &&
@@ -71,7 +70,7 @@ namespace FontInfo.Records
         }
 
         public static TableRecord GetNamesTable(List<TableRecord> allTables)
-        {   
+        {
             TableRecord namesTableRecord = allTables.Find(t => t.Tag == Constants.Strings.Tables.NAME);
 
             return namesTableRecord;
@@ -86,27 +85,26 @@ namespace FontInfo.Records
 
         public static async Task<List<TableRecord>> GetAllTablesAsync(AsyncBinaryReader binaryReader)
         {
-            uint sfntVersion = await binaryReader.ReadUInt32BEAsync();
+            uint sfntVersion = await binaryReader.ReadUInt32BEAsync().ConfigureAwait(false);
             validateSfntVersion(sfntVersion);
-            uint tableCount = await binaryReader.ReadUInt16BEAsync();
+            uint tableCount = await binaryReader.ReadUInt16BEAsync().ConfigureAwait(false);
 
-            await binaryReader.SkipAsync(6);
+            await binaryReader.SkipAsync(6).ConfigureAwait(false);
 
             List<TableRecord> tables = new List<TableRecord>();
 
             for (int i = 0; i < tableCount; i++)
             {
-                byte[] tagByte = await binaryReader.ReadBytesAsync(4);
-                uint checksum = await binaryReader.ReadUInt32BEAsync();
-                uint offset = await binaryReader.ReadUInt32BEAsync();
-                uint length = await binaryReader.ReadUInt32BEAsync();
-                TableRecord record = new TableRecord(tagByte,checksum, offset, length);
+                byte[] tagByte = await binaryReader.ReadBytesAsync(4).ConfigureAwait(false);
+                uint checksum = await binaryReader.ReadUInt32BEAsync().ConfigureAwait(false);
+                uint offset = await binaryReader.ReadUInt32BEAsync().ConfigureAwait(false);
+                uint length = await binaryReader.ReadUInt32BEAsync().ConfigureAwait(false);
+                TableRecord record = new TableRecord(tagByte, checksum, offset, length);
 
                 tables.Add(record);
             }
 
             return tables;
         }
-
     }
 }
