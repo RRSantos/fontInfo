@@ -9,9 +9,7 @@ namespace FontInfo.Tables
     {
         public ushort MajorVersion { get; private set; }
         public ushort MinorVersion { get; private set; }
-
         public double FontRevision { get; private set; }
-
         public ushort UnitsPerEm { get; private set; }
 
         protected HeadTable(ushort majorVersion, ushort minorVersion, double revision,  ushort unitsPerEm)
@@ -26,16 +24,15 @@ namespace FontInfo.Tables
         {
             binaryReader.BaseStream.Seek(headTableRecord.Offset, SeekOrigin.Begin);
 
-            ushort majorVersion = await binaryReader.ReadUInt16BEAsync();
-            ushort minorVersion = await binaryReader.ReadUInt16BEAsync();
-            double revision = await binaryReader.ReadInt32FixedBEAsync();
-            await binaryReader.SkipAsync(10);
-            ushort unitsPerEm = await binaryReader.ReadUInt16BEAsync();
+            ushort majorVersion = await binaryReader.ReadUInt16BEAsync().ConfigureAwait(false);
+            ushort minorVersion = await binaryReader.ReadUInt16BEAsync().ConfigureAwait(false);
+            double revision = await binaryReader.ReadInt32FixedBEAsync().ConfigureAwait(false);
+            await binaryReader.SkipAsync(10).ConfigureAwait(false);
+            ushort unitsPerEm = await binaryReader.ReadUInt16BEAsync().ConfigureAwait(false);
 
             HeadTable headTable = new HeadTable(majorVersion, minorVersion, revision, unitsPerEm);
             
             return headTable;
         }
-
     }
 }
