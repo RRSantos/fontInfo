@@ -4,6 +4,7 @@ using FontInfo.Tables;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using FontInfo.InstalledFonts;
 
 namespace FontInfo
 {
@@ -31,6 +32,10 @@ namespace FontInfo
                     Metrics = new FontMetrics(os2Table, headTable);
                 }
             }
+        }
+        public static async Task<IReadOnlyCollection<Font>> GetFontsAsync(List<string> pathList)
+        {
+            return await FontsHelper.GetFontsAsync(pathList);
         }
 
         public static async Task<Font> CreateAsync(string fileName)
