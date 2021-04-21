@@ -1,18 +1,19 @@
 using Xunit;
 using FontInfo;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace FontInfoTests
 {
     public class FontTests
-    {   
+    {
 
         [Fact]
         public async Task ShouldReadDetailsForTTFFontAsync()
         {
             Font font = await Font.CreateAsync(Constants.TTFFontFilename);
-            
-            
+
+
             Assert.Equal("Copyright 2011 Google Inc. All Rights Reserved.", font.Details.Copyright);
             Assert.Equal("Google", font.Details.Designer);
             Assert.Equal("Christian Robertson", font.Details.URLDesigner);
@@ -35,7 +36,7 @@ namespace FontInfoTests
         public async Task ShouldReadMetricsForTTFFontAsync()
         {
             Font font = await Font.CreateAsync(Constants.TTFFontFilename);
-            
+
             Assert.Equal((uint)1946, font.Metrics.Ascender);
             Assert.Equal((uint)512, font.Metrics.Descender);
             Assert.Equal((uint)1946 + 512, font.Metrics.Height);
@@ -58,9 +59,9 @@ namespace FontInfoTests
             Assert.Equal("Trueno", font.Details.FullName);
             Assert.Equal("This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL", font.Details.LicenseDescription);
             Assert.Equal("http://scripts.sil.org/OFL", font.Details.LicenseURL);
-            Assert.Equal("Julieta Ulanovsky", font.Details.Manufacturer);            
+            Assert.Equal("Julieta Ulanovsky", font.Details.Manufacturer);
             Assert.Equal("http://www.zkysky.com.ar/", font.Details.URLVendor);
-            Assert.Equal("TruenoRg", font.Details.PostScriptName);            
+            Assert.Equal("TruenoRg", font.Details.PostScriptName);
             Assert.Equal("Trueno v3.001b", font.Details.UniqueID);
             Assert.Equal("Version 3.001b ", font.Details.Version);
             Assert.Equal(1, font.Details.FontRevision);
@@ -81,5 +82,16 @@ namespace FontInfoTests
 
         }
 
+        [Fact]
+        public async Task ShouldLoadFontsFromGivenPath()
+        {
+            List<string> paths = new List<string>();
+            paths.Add(Constants.FontsPathName);
+
+            IReadOnlyCollection<Font> loadedFonts = await Font.GetFontsAsync(paths);
+
+            Assert.Equal(2, loadedFonts.Count);
+
+        }
     }
 }

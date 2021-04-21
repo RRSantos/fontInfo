@@ -1,8 +1,4 @@
 ﻿using FontInfo.Tables;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace FontInfo
 {
@@ -15,7 +11,7 @@ namespace FontInfo
             Descender = os2Table.ShouldUseTypoMetrics ? (ushort)os2Table.TypoDescender : os2Table.WinDescent;
             Height = Ascender + Descender;
             LineSpacing = (ushort)(Height + os2Table.TypoLineGap);
-            UnitsPerEm = headTable.UnitsPerEm;            
+            UnitsPerEm = headTable.UnitsPerEm;
         }
 
         public uint UnitsPerEm { get; private set; }
@@ -31,6 +27,6 @@ namespace FontInfo
         {
             initInteralFields(os2Table, headTable);
         }
-        
+
     }
 }
