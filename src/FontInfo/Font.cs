@@ -5,16 +5,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using FontInfo.InstalledFonts;
+using FontInfo.Streams;
 
 namespace FontInfo
 {
     public class Font
     {
-        private readonly string filename;
+        private readonly IFontStreamResolver fontStreamResolver;
 
         private async Task loadDataAsync()
         {
-            using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+            using (Stream fs = fontStreamResolver.GetStream())
             {
                 using (AsyncBinaryReader binaryReader = new AsyncBinaryReader(fs))
                 {
@@ -33,6 +34,7 @@ namespace FontInfo
                 }
             }
         }
+
         public static async Task<IReadOnlyCollection<Font>> GetFontsAsync(List<string> pathList)
         {
             return await FontsHelper.GetFontsAsync(pathList);
@@ -45,6 +47,20 @@ namespace FontInfo
             return font;
         }
 
+        public static async Task<Font> CreateAsync(byte[] fileData)
+        {
+            Font font = new Font(fileData);
+            await font.loadDataAsync().ConfigureAwait(false);
+            return font;
+        }
+
+        public static async Task<Font> CreateAsync(Stream fileStream)
+        {
+            Font font = new Font(fileStream);
+            await font.loadDataAsync().ConfigureAwait(false);
+            return font;
+        }
+
         public FontMetrics Metrics { get; private set; }
 
         public FontDetails Details { get; private set; }
@@ -52,8 +68,17 @@ namespace FontInfo
 
         private Font(string fileName)
         {
-            this.filename = fileName;
+            fontStreamResolver = new FileNameStreamResolver(fileName);
         }
 
+        private Font(Stream stream)
+        {
+            fontStreamResolver = new StreamStreamResolver(stream);
+        }
+
+        private Font(byte[] fontFileBytes)
+        {
+            fontStreamResolver = new BytesStreamResolver(fontFileBytes);
+        }
     }
 }

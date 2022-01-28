@@ -2,11 +2,67 @@ using Xunit;
 using FontInfo;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace FontInfoTests
 {
     public class FontTests
     {
+        [Fact]
+        public async Task ShouldReadStreamDetailsForTTFFontAsync()
+        {
+            using (var stream = new FileStream(Constants.TTFFontFilename, FileMode.Open, FileAccess.Read))
+            {
+                Font font = await Font.CreateAsync(stream);
+
+                Assert.Equal("Copyright 2011 Google Inc. All Rights Reserved.", font.Details.Copyright);
+                Assert.Equal("Google", font.Details.Designer);
+                Assert.Equal("Christian Robertson", font.Details.URLDesigner);
+                Assert.Equal("Roboto", font.Details.Family);
+                Assert.Equal("Regular", font.Details.Subfamily);
+                Assert.Equal("Roboto", font.Details.FullName);
+                Assert.Equal("Licensed under the Apache License, Version 2.0", font.Details.LicenseDescription);
+                Assert.Equal("http://www.apache.org/licenses/LICENSE-2.0", font.Details.LicenseURL);
+                Assert.Equal("Google.com", font.Details.URLVendor);
+                Assert.Equal("Roboto-Regular", font.Details.PostScriptName);
+                Assert.Equal("Roboto is a trademark of Google.", font.Details.Trademark);
+                Assert.Equal("Roboto", font.Details.UniqueID);
+                Assert.Equal("Version 2.137; 2017", font.Details.Version);
+                Assert.Equal(2.137, font.Details.FontRevision);
+                Assert.Equal(1, font.Details.MajorVersion);
+                Assert.Equal(0, font.Details.MinorVersion);
+            }
+        }
+
+        [Fact]
+        public async Task ShouldReadBytesDetailsForTTFFontAsync()
+        {
+            using (var stream = new FileStream(Constants.TTFFontFilename, FileMode.Open, FileAccess.Read))
+            {
+                var bytes = new byte[stream.Length];
+                var lenght = await stream.ReadAsync(bytes, 0, bytes.Length);
+                Font font = await Font.CreateAsync(bytes);
+
+                Assert.Equal("Copyright 2011 Google Inc. All Rights Reserved.", font.Details.Copyright);
+                Assert.Equal("Google", font.Details.Designer);
+                Assert.Equal("Christian Robertson", font.Details.URLDesigner);
+                Assert.Equal("Roboto", font.Details.Family);
+                Assert.Equal("Regular", font.Details.Subfamily);
+                Assert.Equal("Roboto", font.Details.FullName);
+                Assert.Equal("Licensed under the Apache License, Version 2.0", font.Details.LicenseDescription);
+                Assert.Equal("http://www.apache.org/licenses/LICENSE-2.0", font.Details.LicenseURL);
+                Assert.Equal("Google.com", font.Details.URLVendor);
+                Assert.Equal("Roboto-Regular", font.Details.PostScriptName);
+                Assert.Equal("Roboto is a trademark of Google.", font.Details.Trademark);
+                Assert.Equal("Roboto", font.Details.UniqueID);
+                Assert.Equal("Version 2.137; 2017", font.Details.Version);
+                Assert.Equal(2.137, font.Details.FontRevision);
+                Assert.Equal(1, font.Details.MajorVersion);
+                Assert.Equal(0, font.Details.MinorVersion);
+            }
+        }
+
 
         [Fact]
         public async Task ShouldReadDetailsForTTFFontAsync()
